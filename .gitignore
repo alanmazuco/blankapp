@@ -8,10 +8,11 @@
 # eclipse specific
 .classpath
 .project
+.settings
+.metadata
+.git
 bin/**
 tmp/**
 tmp/**/*
 *.tmp
 *.bak
-.classpath
-.settings/
