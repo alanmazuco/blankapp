@@ -1,0 +1,17 @@
+# compilations
+*target*
+*.jar
+*.war
+*.ear
+*.class
+
+# eclipse specific
+.classpath
+.project
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+.classpath
+.settings/

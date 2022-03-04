@@ -1,0 +1,21 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"	
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	 
+	<p:dialog 
+		id="dlgStatusLoader"  
+		modal="true" 
+		appendTo="@(body)" 
+		widgetVar="dlgStatusLoader" 
+		header="Espere..." 
+		draggable="false" 
+		closable="false" 
+		resizable="false"		
+		width="120"		
+		style="border-radius:20px !important;">
+				   		
+   		<p:graphicImage library="images" name="/skin/ajax-loader.gif"/>		   		
+	</p:dialog>
+</ui:fragment>

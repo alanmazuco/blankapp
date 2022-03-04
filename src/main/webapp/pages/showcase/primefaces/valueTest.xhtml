@@ -1,0 +1,292 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	template="/WEB-INF/layout/template.xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:param name="pageTitle" value="Validação e Conversão" />
+
+	<ui:define name="content">
+		<h:form id="formValues" >
+			<p:panel header="VALORES PARA TESTE" style="width:100%;display:inline-block;" footer="Testando entradas com Ajax">
+				<div class="p-d-flex inoutput" style="font-size:12px !important;background-color:white;padding:8px;">
+				    
+				    <div class="p-mr-2 p-mb-2" style="font-size:12px !important;margin-top:4px;">
+				    	<div class="p-shadow-24" style="text-align:left !important;height:332px;">
+							
+							<p:selectOneMenu 
+								placeholder="Selecione um objeto"							
+								id="selectValue"
+								value="#{convValidatorCaseBean.valueTest}"
+								converter="objectConverter" 
+								effect="fade" 
+								style="width:200px;">
+			
+								<!-- incluido o atributo resetValues importante nas renderizacoes.
+								     Eh importante porque o form eh submetido com Ajax,
+								     mas permanece na tela -entao necessita reset dos valores -->
+								<p:ajax 
+									event="change" 
+									resetValues="true"									
+									listener="#{convValidatorCaseBean.setarValueTest}"/>
+			
+								<f:selectItem itemLabel="Selecione um objeto" itemValue="" />
+								
+								<f:selectItems 
+									value="#{convValidatorCaseBean.valueTests}"
+									var="valueTest" 
+									itemLabel="objeto nº #{valueTest.id}"
+									itemValue="#{valueTest}" />
+							</p:selectOneMenu>
+							
+							<br/><br/>
+							
+							<h:panelGrid style="margin:0 auto; vertical-align:middle;height:200px;">
+								<p:commandButton value="Validar" immediate="#{convValidatorCaseBean.valueTest.id == null ? 'true' : 'false'}" action="#{convValidatorCaseBean.salvar()}" />
+							</h:panelGrid>
+						</div>
+				    </div>				    
+				    
+				    <div class="p-mr-2 p-mb-2" style="padding-left:10px;width:150px;">
+				    	<div class="p-shadow-24" style="text-align:right;height:20px;margin-top:4px;">
+				    		<h:outputLabel value="Nomes Próprios:" />
+				    	</div>
+				    	<div class="p-shadow-24" style="text-align:right;height:20px;margin-top:4px;">
+				    		<h:outputLabel value="Integer:" />
+				    	</div>
+				    	<div class="p-shadow-24" style="text-align:right;height:20px;margin-top:4px;">
+				    		<h:outputLabel value="Integer 4 Dig:" />
+				    	</div>
+				    	<div class="p-shadow-24" style="text-align:right;height:20px;margin-top:4px;">
+				    		<h:outputLabel value="Longo:" />
+				    	</div>
+				    	<div class="p-shadow-24" style="text-align:right;height:20px;margin-top:4px;">
+				    		<h:outputLabel value="Double:" />
+				    	</div>
+				    	<div class="p-shadow-24" style="text-align:right;height:20px;margin-top:4px;">
+				    		<h:outputLabel value="Money:" />
+				    	</div>
+				    	<div class="p-shadow-24" style="text-align:right;height:20px;margin-top:4px;">
+				    		<h:outputLabel value="Date:" />
+				    	</div>
+				    	<div class="p-shadow-24" style="text-align:right;height:20px;margin-top:4px;">
+				    		<h:outputLabel value="Email:" />
+				    	</div>
+				    	<div class="p-shadow-24" style="text-align:right;height:20px;margin-top:4px;">
+				    		<h:outputLabel value="String 6 Carac:" />
+				    	</div>
+				    	<div class="p-shadow-24" style="text-align:right;height:20px;margin-top:4px;">
+				    		<h:outputLabel value="String Min 3 Carac:" />
+				    	</div>
+				    	<div class="p-shadow-24" style="text-align:right;height:20px;margin-top:4px;">
+				    		<h:outputLabel value="CPF:" />
+				    	</div>
+				    	<div class="p-shadow-24" style="text-align:right;height:20px;margin-top:4px;">
+				    		<h:outputLabel value="CNPJ:" />
+				    	</div>
+				    	<div class="p-shadow-24" style="text-align:right;height:20px;margin-top:4px;">
+				    		<h:outputLabel value="Phone:" />
+				    	</div>
+				    	<div class="p-shadow-24" style="text-align:right;height:20px;margin-top:4px;">
+				    		<h:outputLabel value="CEP:" />
+				    	</div>
+				    </div>
+				    
+				    <div class="p-mr-2 p-mb-2" style="width:200px;">
+				    	<div class="p-shadow-24" style="font-size:12px !important;height:20px;margin-top:4px;">
+					    	<p:inputText 
+					    		label="Nomes Próprios" 
+					    		onkeypress="mascara(this,firstName)"
+								value="#{convValidatorCaseBean.valueTest.strValue}" 
+								style="font-size:12px !important;width:200px;height:20px;padding:0 0 0 4px !important;"/>
+						</div>	
+										
+						<div class="p-shadow-24" style="font-size:12px !important;height:20px;margin-top:4px;">
+							<p:inputText 
+								label="Integer"
+								value="#{convValidatorCaseBean.valueTest.intValue}"
+								onkeypress="mascara(this,numero)"
+								converterMessage="O número é grande demais."
+								style="font-size:12px !important;width:200px;height:20px;padding:0 0 0 4px !important;"/>
+						</div>
+						
+						<div class="p-shadow-24" style="font-size:12px !important;height:20px;margin-top:4px;">
+							<p:inputText 
+								label="Integer 4 Dig"
+								value="#{convValidatorCaseBean.valueTest.intValue4}"
+								onkeypress="mascara(this,numero)" 
+								maxlength="4" 
+								style="font-size:12px !important;width:200px;height:20px;padding:0 0 0 4px !important;"/>
+						</div>
+						
+						<div class="p-shadow-24" style="font-size:12px !important;height:20px;margin-top:4px;">
+							<p:inputText 
+								label="Longo" 
+								onkeypress="mascara(this,numero)"
+								value="#{convValidatorCaseBean.valueTest.longValue}"
+								style="font-size:12px !important;width:200px;height:20px;padding:0 0 0 4px !important;"/>
+						</div>
+						
+						<div class="p-shadow-24" style="font-size:12px !important;height:20px;margin-top:4px;">
+							<p:inputText 
+								label="Double"
+								value="#{convValidatorCaseBean.valueTest.doubleValue}"
+								onkeypress="mascara(this,double)"
+								style="font-size:12px !important;width:200px;height:20px;padding:0 0 0 4px !important;"/>
+						</div>
+						
+						<div class="p-shadow-24" style="font-size:12px !important;height:20px;margin-top:4px;">
+							<p:inputText 
+								label="Money"
+								value="#{convValidatorCaseBean.valueTest.moeda}"
+								onkeypress="mascara(this,moeda);"
+								style="font-size:12px !important;width:200px;height:20px;padding:0 0 0 4px !important;">
+								<f:convertNumber pattern="###,##0.00" />							
+							</p:inputText>
+						</div>
+						
+						<div class="p-shadow-24" style="font-size:12px !important;height:20px;margin-top:4px;">
+							<p:inputText 
+								label="Date"
+								value="#{convValidatorCaseBean.valueTest.dateValue}"
+								onkeypress="mascara(this,data);" 
+								maxlength="10"
+								style="font-size:12px !important;width:200px;height:20px;padding:0 0 0 4px !important;">
+								<f:converter converterId="dateConverter" />
+							</p:inputText>
+						</div>
+						
+						<div class="p-shadow-24" style="font-size:12px !important;height:20px;margin-top:4px;">
+							<p:inputText 
+								label="Email" 
+								value="#{convValidatorCaseBean.valueTest.email}"
+								style="font-size:12px !important;width:200px;height:20px;padding:0 0 0 4px !important;">
+								<f:validator validatorId="emailValidator" />
+							</p:inputText>
+						</div>
+						
+						<div class="p-shadow-24" style="font-size:12px !important;height:20px;margin-top:4px;">
+							<p:inputText 
+								label="String 6 Carac" 
+								maxlength="6"
+								value="#{convValidatorCaseBean.valueTest.strValue6}"
+								validatorMessage="String 6 Carac: #{msg.MGL003}"
+								style="font-size:12px !important;width:200px;height:20px;padding:0 0 0 4px !important;">
+								<f:validateRegex pattern="#{convValidatorCaseBean.limitChar}" />
+								<f:validateLength minimum="6" />
+							</p:inputText>
+						</div>
+						
+						<div class="p-shadow-24" style="font-size:12px !important;height:20px;margin-top:4px;">
+							<p:inputText 
+								label="String Min 3 Carac"
+								value="#{convValidatorCaseBean.valueTest.strValueNoSpaceBlank}"
+								validatorMessage="String Min 3 Carac: #{msg.MGL004}"
+								style="font-size:12px !important;width:200px;height:20px;padding:0 0 0 4px !important;">
+								<f:validateRegex
+									pattern="#{convValidatorCaseBean.limitCharNotBlankSpace}" />
+								<f:validateLength minimum="3" />
+							</p:inputText>
+						</div>
+						
+						<div class="p-shadow-24" style="font-size:12px !important;height:20px;margin-top:4px;">
+							<p:inputText 
+								label="CPF" 
+								value="#{convValidatorCaseBean.valueTest.cpf}"							
+								onkeypress="mascara(this,cpf)" 
+								maxlength="14"
+								style="font-size:12px !important;width:200px;height:20px;padding:0 0 0 4px !important;"/>						
+						</div>
+						
+						<div class="p-shadow-24" style="font-size:12px !important;height:20px;margin-top:4px;">
+							<p:inputText 
+								label="CNPJ" 
+								value="#{convValidatorCaseBean.valueTest.cnpj}"							
+								onkeypress="mascara(this,cnpj)" 
+								maxlength="18"
+								style="font-size:12px !important;width:200px;height:20px;padding:0 0 0 4px !important;"/>						
+						</div>
+						
+						<div class="p-shadow-24" style="font-size:12px !important;height:20px;margin-top:4px;">
+							<p:inputText 
+								label="Phone" 
+								onkeydown="mascara(this,tel)"
+								value="#{convValidatorCaseBean.valueTest.tel}" 
+								maxlength="14"
+								style="font-size:12px !important;width:200px;height:20px;padding:0 0 0 4px !important;">
+								<f:validator validatorId="phoneValidator" />
+								<f:validateLength minimum="13" />
+							</p:inputText>
+						</div>
+						
+						<div class="p-shadow-24" style="font-size:12px !important;height:20px;margin-top:4px;">
+							<p:inputText 
+								label="CEP"
+								value="#{convValidatorCaseBean.valueTest.cep}" 
+								maxlength="9"
+								onkeypress="mascara(this,cep)" 
+								validatorMessage="#{msg.MGL002}"
+								style="font-size:12px !important;width:200px;height:20px;padding:0 0 0 4px !important;">
+								<f:converter converterId="cepConverter" />
+								<f:validateLength minimum="8" />
+							</p:inputText>
+						</div>
+						
+				    </div>
+				    
+				    <div class="p-mr-2 p-mb-2" style="text-align:left">
+				    	<div class="p-shadow-24" style="width:200px !important;height:20px;margin-top:4px;">
+				    		<h:outputText value="#{convValidatorCaseBean.valueTest.strValue}" />
+				    	</div>
+				    	<div class="p-shadow-24" style="width:200px !important;height:20px;margin-top:4px;">
+				    		<h:outputText value="#{convValidatorCaseBean.valueTest.intValue}" />
+				    	</div>
+				    	<div class="p-shadow-24" style="width:200px !important;height:20px;margin-top:4px;">
+				    		<h:outputText value="#{convValidatorCaseBean.valueTest.intValue4}" />
+				    	</div>
+				    	<div class="p-shadow-24" style="width:200px !important;height:20px;margin-top:4px;">
+				    		<h:outputText value="#{convValidatorCaseBean.valueTest.longValue}" />
+				    	</div>
+				    	<div class="p-shadow-24" style="width:200px !important;height:20px;margin-top:4px;">
+				    		<h:outputText value="#{convValidatorCaseBean.valueTest.doubleValue}" />
+				    	</div>
+				    	<div class="p-shadow-24" style="width:200px !important;height:20px;margin-top:4px;">
+				    		<h:outputText value="#{convValidatorCaseBean.valueTest.moeda}" />
+				    	</div>
+				    	<div class="p-shadow-24" style="width:200px !important;height:20px;margin-top:4px;">
+				    		<h:outputText value="#{convValidatorCaseBean.valueTest.dateValue}" />
+				    	</div>
+				    	<div class="p-shadow-24" style="width:200px !important;height:20px;margin-top:4px;">
+				    		<h:outputText value="#{convValidatorCaseBean.valueTest.email}" />
+				    	</div>
+				    	<div class="p-shadow-24" style="width:200px !important;height:20px;margin-top:4px;">
+				    		<h:outputText value="#{convValidatorCaseBean.valueTest.strValue6}" />
+				    	</div>
+				    	<div class="p-shadow-24" style="width:200px !important;height:20px;margin-top:4px;">
+				    		<h:outputText value="#{convValidatorCaseBean.valueTest.strValueNoSpaceBlank}" />
+				    	</div>
+				    	<div class="p-shadow-24" style="width:200px !important;height:20px;margin-top:4px;">
+				    		<h:outputText value="#{convValidatorCaseBean.valueTest.cpf}" />
+				    	</div>
+				    	<div class="p-shadow-24" style="width:200px !important;height:20px;margin-top:4px;">
+				    		<h:outputText value="#{convValidatorCaseBean.valueTest.cnpj}" />
+				    	</div>
+				    	<div class="p-shadow-24" style="width:200px !important;height:20px;margin-top:4px;">
+				    		<h:outputText value="#{convValidatorCaseBean.valueTest.tel}" />
+				    	</div>
+				    	<div class="p-shadow-24" style="width:200px !important;height:20px;margin-top:4px;">
+				    		<h:outputText value="#{convValidatorCaseBean.valueTest.cep}" />
+				    	</div>
+				    </div>	
+				    				    
+							    
+				</div>
+				<p:commandButton value="Show Case"
+						action="/pages/showcase/homeShowCase?faces-redirect=true" immediate="true" />
+										
+			</p:panel>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
